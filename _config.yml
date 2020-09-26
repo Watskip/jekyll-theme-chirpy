@@ -8,7 +8,7 @@
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 #--------------------------
 
-title: Tensei                         # the main title
+title: Watskip                         # the main title
 
 tagline: Compartiendo write-ups respecto a CTFs, Linux o Windows.  # it will display as the sub-title
 
@@ -29,7 +29,7 @@ twitter:
   username: Watskip           # change to your twitter username
 
 social:
-  name: Skip                  # it will shows as the copyright owner in Footer
+  name: watskip                  # it will shows as the copyright owner in Footer
   email: example@doamin.com             # change to your email address
   links:
     # The first element serves as the copyright owner's link
