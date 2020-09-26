@@ -8,7 +8,7 @@ pin: false
 ---
 
 
-Estaba hablando con unos compañeros sobre Linux, el flujo de la conversación me llevó a mencionar los File Descriptors, a lo cual el resto desconocía. Para reforzar la definición que les di y de la misma manera ayudarme a revisitar el concepto he creado lo siguiente.
+Estaba hablando con unos compañeros sobre Linux, el flujo de la conversación me llevó a mencionar los File Descriptors, a lo cual el resto desconocía. Para reforzar la definición que les proveí y de la misma manera ayudarme a revisitar el concepto he creado lo siguiente.
 
 Antes de continuar, en un sistema \*nix (Unix o Linux), debemos de recordar que podemos usar `<` y `>` para redirigir la salida y entrada de datos. La redirección también puede usarse para abrir y cerrar archivos al momento de ejecución de comandos. A continuación lo estaremos usando en los ejemplos para tener una perspectiva práctica de como funcionan los File Descriptors.
 
