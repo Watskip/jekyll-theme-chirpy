@@ -9,7 +9,7 @@ pin: false
 
 
 
-# File Descriptor
+## Definiendo un File Descriptor
 
 Cada vez que abres un archivo en un sistema *nix (Unix o Linux), para el kernel se crea una entrada para simbolizar la transmición o recepción de datos al archivo a lo largo de su proceso. Esta entrada siempre será un número entero positivo, quien de manera secuencial, son guardados en una tabla. Esta es una definición general de un file descriptor. Pero no nos dice mucho desde una perspectiva prática.
 
