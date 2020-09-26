@@ -10,7 +10,7 @@
 
 title: Tensei                         # the main title
 
-tagline: Sometimes posting stuff regarding CTFs, Linux or Windows.  # it will display as the sub-title
+tagline: Compartiendo write-ups respecto a CTFs, Linux o Windows.  # it will display as the sub-title
 
 description: >-                        # used by seo meta and the atom feed
   Adding my two cents to the InfoSec community
