@@ -15,9 +15,9 @@ Cada vez que abres un archivo en un sistema *nix (Unix o Linux), para el kernel 
 
 Cada programa con el cual se interactua tiene 3 streams de datos abiertos cuando se inicia. 
 
-··* Uno como entrada de datos al programa 
-··* Un segundo para salida de datos del programa
-··* Y otro con el fin de mostrar errores/alertas durante la ejecución del programa
+* Uno como entrada de datos al programa 
+* Un segundo para salida de datos del programa
+* Y otro con el fin de mostrar errores/alertas durante la ejecución del programa
 
 Y al inicio del programa también son asociados los FD (File Descriptors) a cada una de estos streams de manera respectiva:
 
