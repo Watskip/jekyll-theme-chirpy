@@ -9,3 +9,4 @@ title: About
 ---
 Siendo Tecnólogo en Redes y estudiante de Ingeniería en Sistemas, Gabriel aspira a ser un profesional que desempeñe en el área de Seguridad Ofensiva. Para lograr este cometido  se mantiene aprendiendo sobre tecnologías Web y Active Directory. Frecuenta participar en CTFs, principalmente en HackTheBox.
 
+<script src="https://www.hackthebox.eu/badge/159213"></script>
