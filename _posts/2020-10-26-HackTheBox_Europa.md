@@ -3,7 +3,7 @@ title: HackTheBox - Europa
 author: Watskip
 date: 2020-10-26 19:55:00 -0400
 categories: [Nix]
-tags: [SQLi, Regex, Misconfiguration]
+tags: [SQLi, Regex, Misconfiguration, HTB]
 pin: false
 ---
 
@@ -174,4 +174,4 @@ Luego de unos minutos, revisamos nuestro listener y....
 
 ![pwned](https://user-images.githubusercontent.com/25357279/97244641-9c20da80-17cf-11eb-8138-af7366338852.png)
 
-Somos root!
+Y con esto.... Somos root!
